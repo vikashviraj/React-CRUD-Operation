@@ -1,66 +1,42 @@
 import './App.css';
 import React from "react";
-import axios from "axios";
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      name: '',
-      email:'',
-      res: ''
-    }
-  }
-  handle = (e) => {
-    this.setState({
-      res:''
-    });
-    if(e.target.name === 'name'){
-      this.setState({
-        name: e.target.value
-      });
-    }else{
-      this.setState({
-        email: e.target.value
-      });
-    }
-  }
-  sendMsg = (e) => {
-    e.preventDefault();
-    let formData = new FormData();
-    formData.append('name', this.state.name);
-    formData.append('email', this.state.email);
-    let url = "http://localhost:8080/react-php/";
+import APICreate from './component/API_Create';
+import APIRead from './component/API_Read';
+import {BrowserRouter as Router, Link, Route} from "react-router-dom";
 
-    axios.post(url, formData).then((res) => {
-      // console.log(res.data);
-      document.getElementById('name').value = '';
-      document.getElementById('email').value = '';
-      this.setState({
-        res: res.data
-      });
-    }
-    ).catch((err) => {
-      // console.log(err);
-      this.setState({
-        res: err
-      });
-    }
-    );
-  }
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <label className="form-label">Name:</label>
-          <input type="text" onChange={this.handle} className="form-control" name="name" id="name" placeholder="Enter Name"></input>
-          <label className="form-label">Email:</label>
-          <input type="email" onChange={this.handle} className="form-control" name="email" id="email" placeholder="Enter Email"></input>
-          <input onClick={this.sendMsg} className="btn btn-outline-success mt-2 px-3 py-1" type="submit" value="Send Message"></input>
-          <span className="bg-success mt-4">{this.state.res}</span>
-        </header>
-      </div>
-    );
-  }
+
+function App() {
+  return (
+    <div className="App">
+      <nav className="navbar navbar-expand-lg bg-light px-2">
+          <a className="navbar-brand" href="#">CRUD</a>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNav">
+            <ul className="navbar-nav">
+              <li className="nav-item active">
+                <a className="nav-link" href="/">Create</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/read">Read</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/update">Update</a>
+              </li>
+              <li className="nav-item">
+                <a className="nav-link" href="/delete">Delete</a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+        <Router>
+          <Route exact path="/" component={APICreate} />
+          <Route path="/read" component={APIRead} />
+        </Router>
+      
+    </div>
+  );
 }
 
 export default App;

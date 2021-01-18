@@ -1,6 +1,14 @@
-.App {
+body{
   text-align: center;
   background-color: #282c34;
+}
+.create{
+  margin: auto;
+  width: 30%;
+}
+.read table,tr,td,td{
+  border:2px solid #fff;
+  border-collapse: collapse;
 }
 
 .App-logo {
@@ -23,7 +31,7 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
-  width:30%;
+  width:70%;
   margin:auto;
 }
 
