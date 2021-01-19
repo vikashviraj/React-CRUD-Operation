@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Axios from "axios";
+import axios from "axios";
 import '../App.css';
 
 class API_Read extends Component {
@@ -13,7 +13,7 @@ class API_Read extends Component {
     componentDidMount() {
         let url = "https://restcountries.eu/rest/v2/all";
 
-        Axios.get(url).then(
+        axios.get(url).then(
             (res) => {
                 this.setState({ country: res.data });
             },
