@@ -8,6 +8,7 @@ class APICreate extends React.Component {
       name: '',
       email: '',
       res: '',
+      id:'',
       info: []
     }
   }
@@ -19,7 +20,7 @@ class APICreate extends React.Component {
       this.setState({
         name: e.target.value
       });
-    } else {
+    } else if(e.target.name === 'email'){
       this.setState({
         email: e.target.value
       });
@@ -48,6 +49,32 @@ class APICreate extends React.Component {
     }
     );
   }
+
+  updateMsg = (e) => {
+    e.preventDefault();
+    let formData = new FormData();
+    formData.append('name', this.state.name);
+    formData.append('email', this.state.email);
+    formData.append('id', this.state.id);
+    let url = "http://localhost:8080/react-php/";
+
+    axios.post(url, formData).then((res) => {
+      // console.log(res.data);
+      document.getElementById('name').value = '';
+      document.getElementById('email').value = '';
+      this.setState({
+        res: res.data
+      });
+    }
+    ).catch((err) => {
+      // console.log(err);
+      this.setState({
+        res: err
+      });
+    }
+    );
+  }
+
   componentDidMount() {
     let url = "http://localhost:8080/react-php/readAPI.php";
 
@@ -61,6 +88,26 @@ class APICreate extends React.Component {
         console.log(err);
       }
     );
+  }
+
+  assignInput = (e) =>{
+    if(e.target.name === 'key'){
+      this.setState({
+        id: e.target.value
+      });
+      this.state.info.map((ele, i) =>{
+        if(ele.id === this.state.id){
+          document.getElementById('name').value = ele.name;
+          document.getElementById('email').value = ele.email;
+          this.state.name = ele.name;
+          this.state.email = ele.email;
+        }
+        return 0;
+      }
+      
+      )}
+
+
   }
 
   Delete = (e) => {
@@ -92,6 +139,7 @@ class APICreate extends React.Component {
         <label className="form-label">Email:</label>
         <input type="email" onChange={this.handle} className="form-control" name="email" id="email" placeholder="Enter Email"></input>
         <input onClick={this.sendMsg} className="btn btn-outline-success mt-2 px-3 py-1" type="submit" value="Send Message"></input>
+        <input onClick={this.updateMsg} className="btn btn-outline-success mt-2 px-3 py-1" type="submit" value="Update Message"></input>
         <p className="bg-success mt-4">{this.state.res}</p>
 
         <div className="row mt-4">
@@ -111,7 +159,7 @@ class APICreate extends React.Component {
                       <td>{i + 1}</td>
                       <td>{ele.name}</td>
                       <td>{ele.email}</td>
-                      <td><button value={ele.id}>Edit</button></td>
+                      <td><button onClick={this.assignInput} name="key" value={ele.id}>Edit</button></td>
                       <td><button onClick={this.Delete} value={ele.id}>Delete</button></td>
                     </tr>)
                   })
